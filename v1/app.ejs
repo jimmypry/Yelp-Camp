@@ -1,0 +1,38 @@
+var express = require("express");
+var app = express();
+var bodyParser = require("body-parser");
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+
+var campgrounds = [
+    {name:"Salmon Creek", image:"http://www.photosforclass.com/download/6017807192"},
+    {name:"Granite Hill", image:"http://www.photosforclass.com/download/7121865553"},
+    {name:"Mountain Goat's Rest", image:"http://www.photosforclass.com/download/2123340163"},    
+    {name:"Salmon Creek2", image:"http://www.photosforclass.com/download/6017807192"},
+    {name:"Granite Hill2", image:"http://www.photosforclass.com/download/7121865553"},
+    {name:"Mountain Goat's Rest2", image:"http://www.photosforclass.com/download/2123340163"}
+]
+app.get("/", function(req, res){
+    res.render("landing");
+})
+
+app.get("/campgrounds", function(req,res){
+    res.render("campgrounds", {campgrounds:campgrounds});
+});
+
+app.post("/campgrounds", function(req, res){
+    var name = req.body.name;
+    var image = req.body.image;
+    var newCampground = {name: name, image: image};
+    campgrounds.push(newCampground);
+    res.redirect("/campgrounds");
+})
+
+app.get("/campgrounds/new", function(req, res){
+    res.render("new.ejs");
+})
+
+app.listen(process.env.PORT, process.env.AP, function(){
+    console.log("YelpCamp start!");
+})
